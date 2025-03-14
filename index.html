@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Divisas</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+    <div class="container">
+        <h2>Conversor de Divisas</h2>
+        <input type="number" id="amount" placeholder="Cantidad" />
+        <select id="from">
+            <option value="gold">Gold</option>
+            <option value="arena">Arena Coin</option>
+            <option value="silk">Silk</option>
+        </select>
+        <select id="to">
+            <option value="gold">Gold</option>
+            <option value="arena">Arena Coin</option>
+            <option value="silk">Silk</option>
+        </select>
+        <button onclick="convert()">Convertir</button>
+        <h3 id="result"></h3>
+    </div>
+    
+    <script>
+        function formatearNumero(num) {
+            return num.toLocaleString("es-ES");
+        }
+        
+        function convert() {
+            let amount = parseFloat(document.getElementById("amount").value);
+            let from = document.getElementById("from").value;
+            let to = document.getElementById("to").value;
+            let result = 0;
+            
+            // Valores de conversión
+            let goldToArena = 250000000000 / 1000; // 250000000 por 1 arena
+            let arenaToSilk = 7500 / 500; // 15 arena por 1 silk
+            
+            // Conversión intermedia
+            if (from === "gold") {
+                if (to === "arena") result = amount / goldToArena;
+                else if (to === "silk") result = (amount / goldToArena) / arenaToSilk;
+                else result = amount;
+            } else if (from === "arena") {
+                if (to === "gold") result = amount * goldToArena;
+                else if (to === "silk") result = amount / arenaToSilk;
+                else result = amount;
+            } else if (from === "silk") {
+                if (to === "arena") result = amount * arenaToSilk;
+                else if (to === "gold") result = (amount * arenaToSilk) * goldToArena;
+                else result = amount;
+            }
+            
+            document.getElementById("result").innerText = `Resultado: ${formatearNumero(Math.floor(result))} ${to}`;
+        }
+    </script>
+</body>
+</html>
